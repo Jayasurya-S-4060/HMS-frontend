@@ -17,7 +17,7 @@ import RegisterForm from "./pages/RegisterForm";
 import Requests from "./pages/MainRequests";
 import FinancialManagement from "./pages/FinancialReport";
 import AdminNotifications from "./pages/AdminNotifications";
-import ViewNotifications from "./pages/viewNotifications";
+import ViewNotifications from "./pages/ViewNotifications";
 import PaymentSuccess from "./pages/payment-success";
 import PaymentFailed from "./pages/payment-failed";
 import GeneratePayment from "./pages/GeneratePayment";
