@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-body bg-gray-50 text-gray-800;
+}
+
+.ant-layout,
+.ant-menu,
+.ant-dropdown,
+.ant-avatar,
+.ant-btn,
+.ant-typography,
+.ant-badge {
+  font-family: "Open Sans", sans-serif !important;
+}

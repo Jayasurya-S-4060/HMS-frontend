@@ -1,0 +1,31 @@
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px; /* Thin scrollbar */
+  height: 8px;
+}
+
+/* Track (background behind scrollbar) */
+::-webkit-scrollbar-track {
+  background: #f4f4f4; /* Light gray background */
+  border-radius: 10px;
+}
+
+/* Scrollbar Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  transition: background 0.3s ease-in-out;
+}
+
+/* Hover Effect on Scrollbar */
+::-webkit-scrollbar-thumb:hover {
+}
+
+/* Hide scrollbar when not scrolling */
+::-webkit-scrollbar-thumb:active {
+  background: #8b6508;
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+}
