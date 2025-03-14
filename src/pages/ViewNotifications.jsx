@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getNotifications, markAsRead } from "../services/notificationService";
-// import dayjs from "dayjs";
+import dayjs from "dayjs";
 import { useAuth } from "../context/AuthContext";
 
 const NotificationPage = () => {
@@ -74,7 +74,7 @@ const NotificationPage = () => {
                         : "text-gray-400"
                     }`}
                   >
-                    {/* {dayjs(notif.createdAt).format("DD MMM, YYYY hh:mm A")} */}
+                    {dayjs(notif.createdAt).format("DD MMM, YYYY hh:mm A")}
                   </span>
                 </div>
 
@@ -102,9 +102,9 @@ const NotificationPage = () => {
             <div className="flex justify-between items-center">
               <h3 className="text-2xl font-bold text-gray-800">Notification</h3>
               <span className="text-sm text-gray-500">
-                {/* {dayjs(selectedNotification.createdAt).format(
+                {dayjs(selectedNotification.createdAt).format(
                   "DD MMM, YYYY hh:mm A"
-                )} */}
+                )}
               </span>
             </div>
             <p className="text-gray-700 leading-relaxed">
