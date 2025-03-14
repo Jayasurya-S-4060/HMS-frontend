@@ -3,7 +3,7 @@ import { getNotifications, markAsRead } from "../services/notificationService";
 import dayjs from "dayjs";
 import { useAuth } from "../context/AuthContext";
 
-const NotificationPage = () => {
+const ViewNotifications = () => {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [selectedNotification, setSelectedNotification] = useState(null);
@@ -123,4 +123,4 @@ const NotificationPage = () => {
   );
 };
 
-export default NotificationPage;
+export default ViewNotifications;

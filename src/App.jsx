@@ -17,7 +17,7 @@ import RegisterForm from "./pages/RegisterForm";
 import Requests from "./pages/MainRequests";
 import FinancialManagement from "./pages/FinancialReport";
 import AdminNotifications from "./pages/AdminNotifications";
-import NotificationView from "./pages/viewNotifications";
+import ViewNotifications from "./pages/viewNotifications";
 import PaymentSuccess from "./pages/payment-success";
 import PaymentFailed from "./pages/payment-failed";
 import GeneratePayment from "./pages/GeneratePayment";
@@ -160,7 +160,7 @@ const Wrapper = () => {
                   </MenuAuthComp>
                 }
               />
-              <Route path="/notifications" element={<NotificationView />} />
+              <Route path="/notifications" element={<ViewNotifications />} />
               <Route
                 path="/userPayments/payment"
                 element={
