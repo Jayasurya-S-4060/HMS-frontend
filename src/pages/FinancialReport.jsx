@@ -11,7 +11,7 @@ import {
 } from "antd";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import moment from "moment";
+import dayjs from "dayjs";
 import getFinancialRecords from "../services/getFinancialRecords";
 import createFinancialRecord from "../services/createFinancialRecord";
 import updateFinancialRecord from "../services/updateFinancialRecord";
@@ -85,11 +85,12 @@ const FinancialManagement = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
+      const formattedValues = { ...values, date: values.date.toISOString() }; // Ensure ISO format
       if (editRecord) {
-        await updateFinancialRecord(editRecord._id, values);
+        await updateFinancialRecord(editRecord._id, formattedValues);
         message.success("Financial record updated successfully.");
       } else {
-        await createFinancialRecord(values);
+        await createFinancialRecord(formattedValues);
         message.success("Financial record added successfully.");
       }
       setModalVisible(false);
@@ -112,7 +113,7 @@ const FinancialManagement = () => {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      render: (text) => moment(text).format("YYYY-MM-DD"),
+      render: (text) => dayjs(text).format("YYYY-MM-DD"), // ✅ dayjs formatting
     },
     { title: "Description", dataIndex: "description", key: "description" },
     {
@@ -132,7 +133,7 @@ const FinancialManagement = () => {
   ];
 
   const chartData = records.map((record) => ({
-    date: moment(record.date).format("YYYY-MM-DD"),
+    date: dayjs(record.date).format("YYYY-MM-DD"), // ✅ dayjs formatting
     revenue: record.type === "Revenue" ? record.amount : 0,
     expense: record.type === "Expense" ? record.amount : 0,
   }));
@@ -198,7 +199,7 @@ const FinancialManagement = () => {
           initialValues={{
             type: editRecord?.type || "Revenue",
             amount: editRecord?.amount || "",
-            date: editRecord ? moment(editRecord.date) : moment(),
+            date: editRecord ? dayjs(editRecord.date) : dayjs(),
             description: editRecord?.description || "",
           }}
           validationSchema={validationSchema}
@@ -246,7 +247,7 @@ const FinancialManagement = () => {
                 help={touched.date && errors.date}
               >
                 <DatePicker
-                  value={moment(values.date)}
+                  value={values.date}
                   onChange={(date) => setFieldValue("date", date)}
                   style={{ width: "100%" }}
                 />
