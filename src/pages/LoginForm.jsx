@@ -1,9 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, notification } from "antd";
-
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import * as Yup from "yup";
-
 import { useAuth } from "../context/AuthContext";
 
 const loginValidationSchema = Yup.object({
@@ -14,10 +12,60 @@ const loginValidationSchema = Yup.object({
 });
 
 const LoginForm = () => {
-  const { login } = useAuth();
+  const { login } = useAuth(); // Login function from context
+  const [isQuickLogging, setIsQuickLogging] = useState(false); // To manage loading state for quick login
+
+  // Predefined credentials
+  const quickLogins = [
+    { role: "Admin", email: "sjjjsurya@gmail.com", password: "5e47e187ac92" },
+    { role: "Resident", email: "Raja@gmail.com", password: "5e47e187ac92" },
+    {
+      role: "Staff",
+      email: "vipersojo@gmail.com",
+      password: "5e47e187ac92",
+    },
+  ];
+
+  // Quick login handler
+  const handleQuickLogin = async (email, password) => {
+    setIsQuickLogging(true);
+    try {
+      await login({ email, password });
+      notification.success({
+        message: "Login Successful",
+        description: `Logged in as ${email}`,
+      });
+    } catch (err) {
+      const errorMessage =
+        err.response?.data?.message || "Something went wrong.";
+      notification.error({
+        message: "Login Failed",
+        description: errorMessage,
+      });
+    } finally {
+      setIsQuickLogging(false);
+    }
+  };
+
   return (
     <div>
       <h2 className="text-2xl font-semibold text-gray-700">Login</h2>
+
+      {/* Bubble Buttons */}
+      <div className="flex space-x-2 mb-4">
+        {quickLogins.map((item) => (
+          <button
+            key={item.role}
+            onClick={() => handleQuickLogin(item.email, item.password)}
+            className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 transition"
+            disabled={isQuickLogging} // Optional: disable while loading
+          >
+            {isQuickLogging ? "Logging in..." : `Login as ${item.role}`}
+          </button>
+        ))}
+      </div>
+
+      {/* Manual Formik Form */}
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={loginValidationSchema}
@@ -77,14 +125,6 @@ const LoginForm = () => {
           </Form>
         )}
       </Formik>
-      {/* 
-      <Link
-        to="/auth/forgot-password"
-        className="mt-2 text-blue-500 hover:underline block"
-      >
-        {" "}
-        Forgot Password?
-      </Link> */}
     </div>
   );
 };
@@ -92,6 +132,7 @@ const LoginForm = () => {
 const InputField = (props) => (
   <Field {...props} className="w-full p-2 mt-2 border rounded-lg" />
 );
+
 const FieldWrapper = ({ children }) => <div className="h-16">{children}</div>;
 
 export default LoginForm;
