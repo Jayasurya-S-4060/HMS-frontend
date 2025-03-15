@@ -70,24 +70,15 @@ export const AuthProvider = ({ children }) => {
 
   // Login function
   const login = async (params) => {
-    try {
-      const response = await axiosInstance.post("/api/auth/login", params, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      const loggedInUser = response.data.user;
-      setUser(loggedInUser);
+    const response = await axiosInstance.post("/api/auth/login", params, {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    });
+    const loggedInUser = response.data.user;
+    setUser(loggedInUser);
 
-      redirectUser(loggedInUser.role);
-      return { success: true };
-    } catch (error) {
-      console.error("Login Error:", error.response?.data || error.message);
-      return {
-        success: false,
-        message:
-          error.response?.data?.message || "Login failed, please try again",
-      };
-    }
+    redirectUser(loggedInUser.role);
+    return response;
   };
 
   // Logout function

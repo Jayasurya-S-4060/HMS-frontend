@@ -57,7 +57,7 @@ const LoginForm = () => {
             className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 transition"
             disabled={isQuickLogging}
           >
-            {isQuickLogging ? "Logging in..." : `Login as ${item.role}`}
+            {item.role}
           </button>
         ))}
       </div>
