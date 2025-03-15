@@ -12,10 +12,9 @@ const loginValidationSchema = Yup.object({
 });
 
 const LoginForm = () => {
-  const { login } = useAuth(); // Login function from context
-  const [isQuickLogging, setIsQuickLogging] = useState(false); // To manage loading state for quick login
+  const { login } = useAuth();
+  const [isQuickLogging, setIsQuickLogging] = useState(false);
 
-  // Predefined credentials
   const quickLogins = [
     { role: "Admin", email: "sjjjsurya@gmail.com", password: "5e47e187ac92" },
     { role: "Resident", email: "Raja@gmail.com", password: "5e47e187ac92" },
@@ -26,7 +25,6 @@ const LoginForm = () => {
     },
   ];
 
-  // Quick login handler
   const handleQuickLogin = async (email, password) => {
     setIsQuickLogging(true);
     try {
@@ -51,21 +49,19 @@ const LoginForm = () => {
     <div>
       <h2 className="text-2xl font-semibold text-gray-700">Login</h2>
 
-      {/* Bubble Buttons */}
       <div className="flex space-x-2 mb-4">
         {quickLogins.map((item) => (
           <button
             key={item.role}
             onClick={() => handleQuickLogin(item.email, item.password)}
             className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 transition"
-            disabled={isQuickLogging} // Optional: disable while loading
+            disabled={isQuickLogging}
           >
             {isQuickLogging ? "Logging in..." : `Login as ${item.role}`}
           </button>
         ))}
       </div>
 
-      {/* Manual Formik Form */}
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={loginValidationSchema}

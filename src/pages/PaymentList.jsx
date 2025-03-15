@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { Table, Tag, Spin, message, Card, Typography } from "antd";
+import { Table, Tag, message, Card, Typography, Select, Input } from "antd";
 import dayjs from "dayjs";
 import { getAllPayments } from "../services/handlePayment";
+
 const { Title } = Typography;
 
 const PaymentList = () => {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchPayments = async () => {
@@ -25,6 +28,18 @@ const PaymentList = () => {
     fetchPayments();
   }, []);
 
+  // Filter based on status
+  const filteredPayments = payments.filter((payment) =>
+    filterStatus === "all" ? true : payment.status === filterStatus
+  );
+
+  // Search based on room number or resident name
+  const searchedPayments = filteredPayments.filter(
+    (payment) =>
+      payment.roomNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      payment.residentName?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const columns = [
     {
       title: "Room",
@@ -40,14 +55,24 @@ const PaymentList = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (amount, record) => `$${amount} ${record.currency}`,
+      render: (amount, record) => `$${amount} ${record.currency || "USD"}`,
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
       render: (status) => (
-        <Tag color={status === "succeeded" ? "green" : "blue"}>{status}</Tag>
+        <Tag
+          color={
+            status === "succeeded"
+              ? "green"
+              : status === "pending"
+              ? "orange"
+              : "red"
+          }
+        >
+          {status.toUpperCase()}
+        </Tag>
       ),
     },
     {
@@ -58,9 +83,7 @@ const PaymentList = () => {
     },
   ];
 
-  return loading ? (
-    <Spin size="large" />
-  ) : (
+  return (
     <Card
       bordered={false}
       style={{
@@ -73,14 +96,34 @@ const PaymentList = () => {
         <Title level={3} className="!m-0">
           All Generated Payments
         </Title>
-        <div className="space-x-3"></div>
+        <div className="space-x-3 flex">
+          <Select
+            defaultValue="all"
+            onChange={(value) => setFilterStatus(value)}
+            options={[
+              { value: "all", label: "All Payments" },
+              { value: "succeeded", label: "Succeeded" },
+              { value: "pending", label: "Pending" },
+              { value: "failed", label: "Failed" },
+            ]}
+            style={{ width: 160 }}
+          />
+          <Input.Search
+            placeholder="Search Room or Resident"
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ width: 250 }}
+            allowClear
+          />
+        </div>
       </div>
       <Table
         columns={columns}
-        dataSource={payments}
-        rowKey="id"
+        dataSource={searchedPayments}
+        rowKey="_id"
         bordered
+        loading={loading}
         pagination={{ pageSize: 10 }}
+        locale={{ emptyText: "No payments found" }}
       />
     </Card>
   );
