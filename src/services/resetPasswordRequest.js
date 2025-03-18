@@ -1,16 +1,17 @@
 import axiosInstance from "../api/axiosInstance";
 
-async function resetPasswordRequest(params) {
-  const url = import.meta.env.VITE_API_URL;
+const resetPasswordRequest = async (data) => {
   try {
-    await axiosInstance.post(url + "/api/reset-password-request", params, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axiosInstance.post(
+      "/api/auth/forgot-password",
+      data
+    );
+    return response.data;
   } catch (error) {
-    console.error(error.response ? error.response.data : error.message);
+    throw error.response
+      ? error.response.data
+      : new Error("Something went wrong");
   }
-}
+};
 
 export default resetPasswordRequest;

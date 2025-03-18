@@ -2,6 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, notification } from "antd";
 import { useState } from "react";
 import * as Yup from "yup";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import { useAuth } from "../context/AuthContext";
 
 const loginValidationSchema = Yup.object({
@@ -18,11 +19,7 @@ const LoginForm = () => {
   const quickLogins = [
     { role: "Admin", email: "sjjjsurya@gmail.com", password: "5e47e187ac92" },
     { role: "Resident", email: "Raja@gmail.com", password: "5e47e187ac92" },
-    {
-      role: "Staff",
-      email: "vipersojo@gmail.com",
-      password: "5e47e187ac92",
-    },
+    { role: "Staff", email: "vipersojo@gmail.com", password: "5e47e187ac92" },
   ];
 
   const handleQuickLogin = async (email, password) => {
@@ -109,6 +106,16 @@ const LoginForm = () => {
                 className="text-red-500 text-sm"
               />
             </FieldWrapper>
+
+            {/* Forgot Password Link */}
+            <div className="mt-2 text-right">
+              <Link
+                to="/forgot-password"
+                className="text-blue-500 hover:underline"
+              >
+                Forgot Password?
+              </Link>
+            </div>
 
             <Button
               type="primary"

@@ -1,16 +1,17 @@
 import axiosInstance from "../api/axiosInstance";
 
-async function resetPassword(body, token) {
+const resetPassword = async (data, token) => {
   try {
-    await axiosInstance.post("/api/reset-password", body, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axiosInstance.post(
+      `/api/auth/reset-password/${token}`,
+      data
+    );
+    return response.data;
   } catch (error) {
-    console.error(error.response ? error.response.data : error.message);
+    throw error.response
+      ? error.response.data
+      : new Error("Something went wrong");
   }
-}
+};
 
 export default resetPassword;
